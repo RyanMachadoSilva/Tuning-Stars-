@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Detalhes do Produto</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Detalhes do Produto</h1>
+  <div style="display: flex; gap: 15px; align-items: center;">
+    <a href="index.html"> Início </a>
+    <a href="cart.html"><i class="fas fa-shopping-cart"></i> Carrinho</a>
+  </div>
+  </header>
+
+ <main>
+  <!-- Produto principal -->
+  <div id="product-details"></div>
+
+  <!-- Produtos relacionados separados -->
+  <section id="related-section">
+    <h3>Outros produtos da mesma categoria</h3>
+    <div id="related-products" class="category-container"></div>
+  </section>
+</main>
+
+
+  <script src="js/products.js"></script>
+  <script src="js/cart.js"></script>
+  <script>
+    // Pegar ID do produto da URL
+   const params = new URLSearchParams(window.location.search);
+const id = parseInt(params.get('id'));
+const product = products.find(p => p.id === id);
+
+const productContainer = document.getElementById("product-details");
+const relatedContainer = document.getElementById("related-products");
+
+if(product) {
+  productContainer.innerHTML = `
+    <img src="${product.image}" alt="${product.name}" width="300">
+    <h2>${product.name}</h2>
+    <p><i class="fas fa-tag"></i> R$${product.price}</p>
+    <p>Categoria: ${product.category}</p>
+    <p>Marca: ${product.brand}</p>
+    <p>Compatibilidade: ${product.compatibility}</p>
+    <button onclick="addToCart(${product.id})">Adicionar ao Carrinho</button>
+  `;
+
+  const relatedProducts = products.filter(p => p.category === product.category && p.id !== product.id);
+
+  relatedProducts.forEach(p => {
+    const card = document.createElement("div");
+    card.className = "part-card";
+    card.innerHTML = `
+      <img src="${p.image}" alt="${p.name}" width="150">
+      <h3>${p.name}</h3>
+      <p>R$${p.price}</p>
+      <a href="product.html?id=${p.id}">Ver detalhes</a>
+    `;
+    relatedContainer.appendChild(card);
+  });
+
+} else {
+  productContainer.innerHTML = "<p>Produto não encontrado!</p>";
+}
+
+  </script>
+
+  <footer>
+  <div class="footer-container">
+    <div class="footer-section">
+      <h3><i class="fas fa-store"></i> Sobre Nós</h3>
+      <p>Loja de peças automotivas esportivas. Qualidade e desempenho para o seu carro.</p>
+    </div>
+
+    <div class="footer-section">
+      <h3><i class="fas fa-link"></i> Links Rápidos</h3>
+      <ul>
+        <li><a href="index.html">🏠 Início</a></li>
+        <li><a href="cart.html">🛒 Carrinho</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h3><i class="fas fa-envelope"></i> Contato</h3>
+      <p>Email: contato@lojaauto.com</p>
+      <p>Tel: (11) 99999-9999</p>
+      <p>Endereço: Rua Exemplo, 123 - São Paulo</p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 Loja de Peças Automotivas. Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+</body>
+</html>
